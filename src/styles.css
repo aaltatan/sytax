@@ -75,7 +75,7 @@
     dark:bg-barley-corn-400 dark:hover:bg-barley-corn-300 dark:text-barley-corn-950;
 }
 @utility card {
-  @apply bg-surface rounded-lg border border-line/60 shadow-sm p-4 space-y-3;
+  @apply bg-surface rounded-lg border border-line/60 shadow-sm p-4 space-y-3 h-full;
 }
 /* Two range inputs stacked into one slider; only the thumbs take the pointer. */
 @utility dual-range {

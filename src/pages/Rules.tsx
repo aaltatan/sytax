@@ -200,70 +200,50 @@ export default function Rules({ configs, onChange }: Props) {
         </span>
       </section>
 
-      <div className="space-y-3 md:grid md:grid-cols-2 md:items-start md:gap-4 md:space-y-0">
-        <section className="card">
-          <h3 className="font-bold">{t("شرائح ضريبة الراتب", "Salary tax brackets")}</h3>
-          <p className="text-sm text-muted">
-            {t(
-              "كل شريحة تبدأ من حدّها الأدنى حتى بداية التالية، والأخيرة بلا سقف. النسبة كسر عشري: 0.11 تعني 11%.",
-              "Each bracket runs from its lower limit to the start of the next; the last has no cap. Rates are decimals: 0.11 means 11%.",
-            )}
-          </p>
-          {brackets.map((_, i) => (
-            <div key={i} className="grid grid-cols-[1fr_1fr_auto] items-start gap-2">
-              {text(`tax.brackets.${i}.lower`, t("من", "From"))}
-              {text(`tax.brackets.${i}.rate`, t("النسبة", "Rate"))}
-              <button
-                type="button"
-                className="mt-6 min-h-11 min-w-11 rounded-md text-red-600 hover:bg-red-50 disabled:opacity-30"
-                aria-label={`${t("حذف الشريحة", "Delete bracket")} ${i + 1}`}
-                disabled={brackets.length === 1}
-                onClick={() => update("tax.brackets", brackets.filter((__, j) => j !== i))}
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-          {problems["tax.brackets"] && <p className="text-red-600">{problems["tax.brackets"]}</p>}
-          <button type="button" className="btn-secondary" onClick={() => update("tax.brackets", [...brackets, { lower: "", rate: "" }])}>
-            {t("إضافة شريحة", "Add bracket")}
-          </button>
-          <Toggle label={t("تقريب خاص لضريبة الشرائح", "Own rounding for the brackets tax")} checked={draft.tax.bracket_rounding.enabled} onChange={(v) => update("tax.bracket_rounding.enabled", v)} />
-          {draft.tax.bracket_rounding.enabled && (
-            <>
-              <div>
-                <label className="label" htmlFor="bracket-rounding-mode">
-                  {t("ما يُقرَّب", "What is rounded")}
-                </label>
-                <select id="bracket-rounding-mode" className="field" value={draft.tax.bracket_rounding.mode} onChange={(e) => update("tax.bracket_rounding.mode", e.target.value)}>
-                  <option value="each">{t("ضريبة كل شريحة قبل جمعها", "Each bracket's tax, before adding")}</option>
-                  <option value="total">{t("مجموع ضريبة الشرائح", "The total of the brackets tax")}</option>
-                </select>
+      <div className="grid xl:grid-cols-3 items-start gap-2">
+
+          <section className="card">
+            <h3 className="font-bold">{t("شرائح ضريبة الراتب", "Salary tax brackets")}</h3>
+            <p className="text-sm text-muted">
+              {t(
+                "كل شريحة تبدأ من حدّها الأدنى حتى بداية التالية، والأخيرة بلا سقف. النسبة كسر عشري: 0.11 تعني 11%.",
+                "Each bracket runs from its lower limit to the start of the next; the last has no cap. Rates are decimals: 0.11 means 11%.",
+              )}
+            </p>
+            {brackets.map((_, i) => (
+              <div key={i} className="grid grid-cols-[1fr_1fr_auto] items-start gap-2">
+                {text(`tax.brackets.${i}.lower`, t("من", "From"))}
+                {text(`tax.brackets.${i}.rate`, t("النسبة", "Rate"))}
+                <button
+                  type="button"
+                  className="mt-6 min-h-11 min-w-11 rounded-md text-red-600 hover:bg-red-50 disabled:opacity-30"
+                  aria-label={`${t("حذف الشريحة", "Delete bracket")} ${i + 1}`}
+                  disabled={brackets.length === 1}
+                  onClick={() => update("tax.brackets", brackets.filter((__, j) => j !== i))}
+                >
+                  ✕
+                </button>
               </div>
-              {rounding("tax.bracket_rounding")}
-            </>
-          )}
-        </section>
-
-        <div className="space-y-3">
-          <section className="card">
-            <h3 className="font-bold">{t("ضريبة الراتب والتعويضات", "Salary and compensation tax")}</h3>
-            {text("tax.min_salary", t("الحد الأدنى للراتب", "Minimum salary"), t("لا يمكن حساب صافٍ أقل منه", "No net below it can be calculated"))}
-            {text("tax.compensation_tax_rate", t("ضريبة التعويضات (نسبة ثابتة)", "Compensation tax (flat rate)"))}
-            {rounding("tax.rounding")}
-          </section>
-
-          <section className="card">
-            <h3 className="font-bold">{t("التأمينات الاجتماعية", "Social security")}</h3>
-            <Toggle label={t("مفعّلة افتراضياً", "On by default")} checked={draft.tax.social_security.enabled} onChange={(v) => update("tax.social_security.enabled", v)} />
-            {text("tax.social_security.rate", t("نسبة الاقتطاع", "Deduction rate"))}
-            {text("tax.social_security.min_salary", t("الحد الأدنى لراتب التأمينات", "Minimum insured salary"))}
-            {text(
-              "tax.social_security.insured_salary",
-              t("راتب التأمينات الافتراضي", "Default social security salary"),
-              t("يُملأ به حقل راتب التأمينات في الحاسبة؛ فارغاً يُحسب على الراتب", "Fills the calculators' social security salary; empty uses the salary"),
+            ))}
+            {problems["tax.brackets"] && <p className="text-red-600">{problems["tax.brackets"]}</p>}
+            <button type="button" className="btn-secondary" onClick={() => update("tax.brackets", [...brackets, { lower: "", rate: "" }])}>
+              {t("إضافة شريحة", "Add bracket")}
+            </button>
+            <Toggle label={t("تقريب خاص لضريبة الشرائح", "Own rounding for the brackets tax")} checked={draft.tax.bracket_rounding.enabled} onChange={(v) => update("tax.bracket_rounding.enabled", v)} />
+            {draft.tax.bracket_rounding.enabled && (
+              <>
+                <div>
+                  <label className="label" htmlFor="bracket-rounding-mode">
+                    {t("ما يُقرَّب", "What is rounded")}
+                  </label>
+                  <select id="bracket-rounding-mode" className="field" value={draft.tax.bracket_rounding.mode} onChange={(e) => update("tax.bracket_rounding.mode", e.target.value)}>
+                    <option value="each">{t("ضريبة كل شريحة قبل جمعها", "Each bracket's tax, before adding")}</option>
+                    <option value="total">{t("مجموع ضريبة الشرائح", "The total of the brackets tax")}</option>
+                  </select>
+                </div>
+                {rounding("tax.bracket_rounding")}
+              </>
             )}
-            {rounding("tax.social_security.rounding")}
           </section>
 
           <section className="card">
@@ -286,6 +266,26 @@ export default function Rules({ configs, onChange }: Props) {
           </section>
 
           <section className="card">
+            <h3 className="font-bold">{t("التأمينات الاجتماعية", "Social security")}</h3>
+            <Toggle label={t("مفعّلة افتراضياً", "On by default")} checked={draft.tax.social_security.enabled} onChange={(v) => update("tax.social_security.enabled", v)} />
+            {text("tax.social_security.rate", t("نسبة الاقتطاع", "Deduction rate"))}
+            {text("tax.social_security.min_salary", t("الحد الأدنى لراتب التأمينات", "Minimum insured salary"))}
+            {text(
+              "tax.social_security.insured_salary",
+              t("راتب التأمينات الافتراضي", "Default social security salary"),
+              t("يُملأ به حقل راتب التأمينات في الحاسبة؛ فارغاً يُحسب على الراتب", "Fills the calculators' social security salary; empty uses the salary"),
+            )}
+            {rounding("tax.social_security.rounding")}
+          </section>
+
+          <section className="card">
+            <h3 className="font-bold">{t("ضريبة الراتب والتعويضات", "Salary and compensation tax")}</h3>
+            {text("tax.min_salary", t("الحد الأدنى للراتب", "Minimum salary"), t("لا يمكن حساب صافٍ أقل منه", "No net below it can be calculated"))}
+            {text("tax.compensation_tax_rate", t("ضريبة التعويضات (نسبة ثابتة)", "Compensation tax (flat rate)"))}
+            {rounding("tax.rounding")}
+          </section>
+
+          <section className="card">
             <h3 className="font-bold">{t("أمثلة الحقول الفارغة", "Empty field examples")}</h3>
             <p className="text-sm text-muted">{t("النص الباهت الظاهر في حقول الحاسبة قبل الكتابة.", "The faint text shown in calculator fields before typing.")}</p>
             <div className="grid grid-cols-2 gap-2">
@@ -296,7 +296,7 @@ export default function Rules({ configs, onChange }: Props) {
               {text("placeholders.share", t("نسبة التعويضات %", "Compensation share %"))}
             </div>
           </section>
-        </div>
+
       </div>
 
       <div className="sticky bottom-20 grid grid-cols-2 gap-2 rounded-lg border border-line/60 bg-surface p-2 shadow-lg md:bottom-4">
