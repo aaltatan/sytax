@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Syrian governmental identity, from taxes-calculator/tailwind.config.ts */
+@theme {
+  --color-timber-green-50: #effefa;
+  --color-timber-green-100: #c8fff1;
+  --color-timber-green-200: #90ffe3;
+  --color-timber-green-300: #51f7d4;
+  --color-timber-green-400: #1de4c0;
+  --color-timber-green-500: #05c7a8;
+  --color-timber-green-600: #00a189;
+  --color-timber-green-700: #05806f;
+  --color-timber-green-800: #0a655a;
+  --color-timber-green-900: #0e534b;
+  --color-timber-green-950: #002724;
+
+  --color-barley-corn-50: #f6f4f0;
+  --color-barley-corn-100: #e7e5da;
+  --color-barley-corn-200: #d2cbb6;
+  --color-barley-corn-300: #b8ad8c;
+  --color-barley-corn-400: #a3926c;
+  --color-barley-corn-500: #988561;
+  --color-barley-corn-600: #7e6a50;
+  --color-barley-corn-700: #665342;
+  --color-barley-corn-800: #58473b;
+  --color-barley-corn-900: #4d3f36;
+  --color-barley-corn-950: #2b221d;
+
+  /* Neutral roles; the identity colors are kept for buttons only. */
+  --color-ground: #f5f5f5;
+  --color-ground-deep: #fafafa;
+  --color-surface: #ffffff;
+  --color-field: #ffffff;
+  --color-ink: #171717;
+  --color-line: #d4d4d4;
+  --color-on-ground: #171717;
+  --color-muted: #525252;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-ground: #171717;
+  --color-ground-deep: #262626;
+  --color-surface: #262626;
+  --color-field: #171717;
+  --color-ink: #f5f5f5;
+  --color-line: #525252;
+  --color-on-ground: #f5f5f5;
+  --color-muted: #a3a3a3;
+  /* Error reds are too dark on neutral-800; lighten them here instead of adding dark: to every use. */
+  --color-red-600: #f87171;
+  --color-red-50: #450a0a;
+}
+
+@utility field {
+  @apply w-full border border-line px-3 py-2 rounded-md bg-field outline-none text-base
+    hover:ring-1 hover:ring-timber-green-700 focus:ring-1 focus:ring-timber-green-700
+    aria-[invalid=true]:border-red-500 aria-[invalid=true]:ring-red-500;
+}
+@utility label {
+  @apply text-sm font-medium tracking-tighter mb-1 block;
+}
+@utility btn {
+  @apply block w-full min-h-11 px-3 py-2 rounded-md font-medium duration-75 cursor-pointer outline-none
+    disabled:opacity-50 disabled:cursor-not-allowed;
+}
+@utility btn-primary {
+  @apply btn bg-timber-green-800 hover:bg-timber-green-700 text-white focus:ring-2 focus:ring-barley-corn-400
+    dark:bg-timber-green-700 dark:hover:bg-timber-green-600;
+}
+@utility btn-secondary {
+  @apply btn bg-barley-corn-200 hover:bg-barley-corn-300 border border-barley-corn-300 text-barley-corn-900 focus:ring-2 focus:ring-barley-corn-400
+    dark:bg-barley-corn-400 dark:hover:bg-barley-corn-300 dark:text-barley-corn-950;
+}
+@utility card {
+  @apply bg-surface rounded-lg border border-line/60 shadow-sm p-4 space-y-3;
+}
+/* Two range inputs stacked into one slider; only the thumbs take the pointer. */
+@utility dual-range {
+  @apply pointer-events-none absolute inset-0 h-full w-full appearance-none bg-transparent;
+  &::-webkit-slider-thumb {
+    @apply pointer-events-auto size-5 cursor-pointer appearance-none rounded-full border-2 border-white bg-timber-green-800 shadow;
+  }
+  &::-moz-range-thumb {
+    @apply pointer-events-auto size-5 cursor-pointer rounded-full border-2 border-white bg-timber-green-800 shadow;
+  }
+}
