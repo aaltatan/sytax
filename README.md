@@ -17,6 +17,8 @@ Requires Node.js.
 npm install
 ```
 
+Sign-in goes through [warden](https://github.com/aaltatan/warden): register a `spa` client for the `sytax` app with the app's origin plus `/` as redirect and post-logout redirect URI, then copy `.env.example` to `.env.local` and fill in the issuer and client id.
+
 ```bash
 npm run dev
 ```

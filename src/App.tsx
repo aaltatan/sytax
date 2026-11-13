@@ -1,3 +1,4 @@
+import { useWarden } from "@abdullahaltatan/warden-js/react";
 import { useEffect, useState } from "react";
 import { loadConfigs, saveConfigs, type Configs } from "./core/settings";
 import Gross from "./pages/Gross";
@@ -80,6 +81,33 @@ const ThemeButton = ({ className }: { className: string }) => (
   </button>
 );
 
+const SignOutButton = ({ className }: { className: string }) => {
+  const warden = useWarden();
+
+  const label = t("تسجيل الخروج", "Sign out");
+
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={`${label} (${warden.user?.profile.email ?? warden.claims?.sub ?? ""})`}
+      className={`min-h-11 min-w-11 rounded-md px-3 text-on-ground hover:bg-line/40 ${className}`}
+      onClick={() => void warden.signOut()}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="size-5 rtl:-scale-x-100"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+      >
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+      </svg>
+    </button>
+  );
+};
+
 export default function App() {
   const [tab, setTab] = useState(tabFromHash);
   const [configs, setConfigs] = useState(loadConfigs);
@@ -112,6 +140,7 @@ export default function App() {
           </div>
           <ThemeButton className="ms-auto md:hidden" />
           <LangButton className="md:hidden" />
+          <SignOutButton className="md:hidden" />
         </header>
 
         {/* Bottom tab bar on phones, a vertical list in the sidebar on wider screens. */}
@@ -142,6 +171,7 @@ export default function App() {
         <div className="hidden md:mt-auto md:flex">
           <ThemeButton className="" />
           <LangButton className="" />
+          <SignOutButton className="" />
         </div>
       </div>
 
